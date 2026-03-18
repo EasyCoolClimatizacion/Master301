@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Master 301">
+    <meta name="theme-color" content="#1e3a8a">
     
     <title>Master Driver 301 - Auditoría Pro</title>
     
@@ -15,75 +16,36 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-        
-        :root {
-            --safe-top: env(safe-area-inset-top);
-            --safe-bottom: env(safe-area-inset-bottom);
-        }
-
-        body { 
-            font-family: 'Inter', sans-serif; 
-            -webkit-tap-highlight-color: transparent;
-            background-color: #f8fafc;
-            color: #1e293b;
-        }
-
-        .app-container {
-            padding-top: calc(0.5rem + var(--safe-top));
-            padding-bottom: calc(2rem + var(--safe-bottom));
-        }
-
-        .card { 
-            border-radius: 1.25rem; 
-            background: white; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
+        :root { --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #f8fafc; color: #1e293b; }
+        .app-container { padding-top: calc(0.5rem + var(--safe-top)); padding-bottom: calc(2rem + var(--safe-bottom)); }
+        .card { border-radius: 1.25rem; background: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0,0,0,0.05); }
         input { font-size: 16px !important; border: none !important; outline: none !important; }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.3);
-        }
-
+        .btn-primary { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.3); }
         .modal-base { display: none; }
         .modal-base.active { display: flex !important; animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        .bar-container { height: 80px; display: flex; align-items: flex-end; justify-content: space-between; gap: 6px; }
-        .bar { width: 100%; border-radius: 6px 6px 2px 2px; transition: height 0.6s ease-in-out; position: relative; min-height: 4px; }
-        .bar-label { font-size: 8px; font-weight: 800; color: #94a3b8; text-align: center; margin-top: 8px; text-transform: uppercase; }
         
-        .tooltip {
-            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
-            background: #000; color: #fff; font-size: 9px; padding: 4px 6px;
-            border-radius: 6px; display: none; pointer-events: none;
-            white-space: nowrap; z-index: 50; font-weight: bold;
-        }
+        .bar-container { height: 100px; display: flex; align-items: flex-end; justify-content: space-between; gap: 4px; }
+        .bar { width: 100%; border-radius: 4px 4px 2px 2px; transition: height 0.6s ease-in-out; min-height: 2px; position: relative; }
+        .bar-label { font-size: 7px; font-weight: 900; color: #94a3b8; text-align: center; margin-top: 8px; text-transform: uppercase; line-height: 1.2; }
+        .tooltip { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; font-size: 9px; padding: 4px 6px; border-radius: 6px; display: none; pointer-events: none; white-space: nowrap; z-index: 50; font-weight: bold; }
         .bar:hover .tooltip { display: block; }
-
-        .toggle-btn { transition: all 0.2s; border: 1px solid transparent; color: #94a3b8; }
+        
+        .toggle-btn { transition: all 0.2s; border: 1px solid transparent; color: #94a3b8; font-weight: 800; }
         .toggle-btn.active { background-color: #1e40af; color: white; border-color: #1e40af; }
-
-        .expense-chip { animation: fadeIn 0.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <!-- Header -->
     <header class="bg-blue-900 text-white sticky top-0 z-50 shadow-lg pt-[env(safe-area-inset-top)]">
         <div class="max-w-md mx-auto p-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-white p-2 rounded-xl text-blue-900">
-                    <i data-lucide="gauge" class="w-6 h-6"></i>
-                </div>
-                <h1 class="text-lg font-black tracking-tight uppercase">Master Driver 301</h1>
+                <div class="bg-white p-2 rounded-xl text-blue-900 shadow-lg"><i data-lucide="gauge" class="w-6 h-6"></i></div>
+                <h1 class="text-lg font-black tracking-tight uppercase italic">Master 301</h1>
             </div>
             <div class="bg-blue-800/50 px-3 py-1.5 rounded-full border border-blue-700">
-                <span id="display-date" class="text-xs font-bold text-white">17 mar</span>
+                <span id="display-date" class="text-xs font-bold uppercase tracking-tighter"></span>
             </div>
         </div>
     </header>
@@ -91,127 +53,134 @@
     <main class="max-w-md mx-auto p-4 space-y-4 app-container">
 
         <!-- DASHBOARD DINÁMICO -->
-        <section class="card p-5 bg-slate-900 text-white overflow-hidden relative border-b-4 border-blue-500 shadow-2xl">
+        <section class="card p-5 bg-slate-900 text-white relative border-b-4 border-blue-500 shadow-2xl overflow-hidden">
             <div class="flex justify-center mb-6">
                 <div class="flex bg-white/10 p-1 rounded-xl border border-white/10">
-                    <button onclick="setView('semanal')" id="view-semanal" class="toggle-btn active px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest">Semanal</button>
-                    <button onclick="setView('mensual')" id="view-mensual" class="toggle-btn px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest">Mensual</button>
+                    <button onclick="setView('semanal')" id="view-semanal" class="toggle-btn active px-4 py-1.5 rounded-lg text-[10px] uppercase">Semanal</button>
+                    <button onclick="setView('mensual')" id="view-mensual" class="toggle-btn px-4 py-1.5 rounded-lg text-[10px] uppercase">Mensual</button>
                 </div>
             </div>
 
-            <div class="flex justify-between items-start mb-6">
-                <div>
-                    <p id="view-label" class="text-[10px] font-black uppercase tracking-widest opacity-50 italic text-blue-400">Neto Bolsillo (Esta Semana)</p>
-                    <h2 id="total-net-display" class="text-4xl font-black tracking-tighter">$0</h2>
-                    <p class="text-[10px] font-bold mt-1 opacity-70">Bruto: <span id="total-bruto-header" class="text-white font-black">$0</span></p>
+            <div class="space-y-4">
+                <div class="text-center pb-4 border-b border-white/5">
+                    <p id="view-label" class="text-[9px] font-black uppercase opacity-50 text-blue-400 tracking-widest mb-1">Neto Real al Bolsillo</p>
+                    <h2 id="total-net-display" class="text-5xl font-black tracking-tighter">$0</h2>
+                    <p class="text-[10px] font-bold mt-1 opacity-60">Bruto Acumulado: <span id="total-bruto-header" class="text-white">$0</span></p>
                 </div>
-                <div class="text-right">
-                    <p id="total-km-display" class="font-black text-xs text-blue-400 uppercase leading-none">0 KM</p>
-                    <p id="total-hours-display" class="font-black text-[10px] text-emerald-400 uppercase mt-1">0.0 HRS</p>
+
+                <!-- KPI: Rendimiento y Kilometraje -->
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5 text-center">
+                        <p class="text-[7px] font-black text-slate-400 uppercase mb-1">KM Totales</p>
+                        <p id="total-km-display" class="text-xs font-black text-white">0 KM</p>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-emerald-500/20 text-center">
+                        <p class="text-[7px] font-black text-emerald-400 uppercase mb-1">Valor $/KM</p>
+                        <p id="avg-rent-display" class="text-xs font-black text-emerald-300">$0/km</p>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5 text-center">
+                        <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Prom. KM/Día</p>
+                        <p id="avg-km-display" class="text-xs font-black text-white">0 KM</p>
+                    </div>
+                </div>
+
+                <!-- KPI: SUMA DE GASTOS -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-orange-500/10 p-3 rounded-2xl border border-orange-500/20 text-center">
+                        <p class="text-[7px] font-black text-orange-400 uppercase mb-1">Inversión Petróleo</p>
+                        <p id="total-fuel-display" class="text-xs font-black text-orange-300">$0</p>
+                    </div>
+                    <div class="bg-blue-500/10 p-3 rounded-2xl border border-blue-500/20 text-center">
+                        <p class="text-[7px] font-black text-blue-400 uppercase mb-1">Gasto TAG / Peajes</p>
+                        <p id="total-tag-display" class="text-xs font-black text-blue-300">$0</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Gráfico de barras -->
-            <div class="mb-6 px-1">
+            <!-- Gráfico Semanal -->
+            <div class="mt-8 mb-4 px-1">
                 <div id="chart-bars" class="bar-container"></div>
-                <div id="chart-labels" class="flex justify-between mt-2"></div>
+                <div id="chart-labels" class="flex justify-between"></div>
             </div>
             
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <div class="bg-white/5 rounded-2xl p-3 border border-white/10 text-center">
-                    <p class="text-[8px] font-bold uppercase opacity-50 mb-1">Uber Bruto</p>
+            <div class="grid grid-cols-2 gap-3 mb-4 text-white text-center">
+                <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
+                    <p class="text-[8px] font-bold opacity-50 mb-1 tracking-widest text-slate-400 uppercase">Bruto Uber</p>
                     <p id="uber-bruto-display" class="font-black text-sm text-white">$0</p>
                 </div>
-                <div class="bg-white/5 rounded-2xl p-3 border border-white/10 text-center">
-                    <p class="text-[8px] font-bold uppercase opacity-50 mb-1">Cabify Bruto</p>
+                <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
+                    <p class="text-[8px] font-bold opacity-50 mb-1 tracking-widest text-slate-400 uppercase">Bruto Cabify</p>
                     <p id="cabify-bruto-display" class="font-black text-sm text-white">$0</p>
                 </div>
             </div>
 
-            <div class="border-t border-white/10 pt-3 flex justify-between items-center opacity-60 text-white">
-                <p class="text-[9px] font-black uppercase tracking-tighter italic">Gastos de Turno:</p>
-                <div class="flex gap-4">
-                    <p class="text-[9px] font-bold">⛽ Petróleo: <span id="total-fuel-display">$0</span></p>
-                    <p class="text-[9px] font-bold">🛣️ TAG: <span id="total-tag-display">$0</span></p>
-                </div>
+            <div class="border-t border-white/10 pt-3 flex justify-center items-center opacity-60 text-white text-[9px]">
+                <p id="total-hours-display" class="font-black uppercase tracking-widest">0 HRS TRABAJADAS</p>
             </div>
         </section>
 
-        <!-- FORMULARIO DE REGISTRO -->
+        <!-- FORMULARIO DE CIERRE -->
         <section class="card p-6 border-2 border-transparent focus-within:border-blue-500 transition-all shadow-lg">
             <h3 class="text-sm font-black text-slate-800 mb-6 flex items-center gap-2 uppercase italic">
-                <i data-lucide="play-circle" class="text-emerald-500"></i> Nuevo Cierre
+                <i data-lucide="plus-circle" class="text-emerald-500"></i> Registrar Turno
             </h3>
             
             <div class="space-y-6 text-slate-700">
-                <div class="bg-slate-50 p-4 rounded-2xl space-y-4 border border-slate-100">
+                <div class="bg-slate-50 p-4 rounded-2xl space-y-4 border border-slate-100 shadow-inner">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
-                            <label class="text-[9px] font-black uppercase opacity-60">Hora Inicio</label>
-                            <input type="time" id="input-time-start" class="w-full p-2 bg-white rounded-lg font-bold text-blue-900" readonly>
+                            <label class="text-[9px] font-black uppercase opacity-60">KM Inicial</label>
+                            <input type="number" id="input-km-start" placeholder="104878" class="w-full p-2 bg-white rounded-lg font-bold shadow-sm">
                         </div>
                         <div class="space-y-1">
-                            <label class="text-[9px] font-black uppercase opacity-60">KM Inicial</label>
-                            <input type="number" id="input-km-start" placeholder="104878" class="w-full p-2 bg-white rounded-lg font-bold">
+                            <label class="text-[9px] font-black uppercase font-bold text-blue-900">KM Término</label>
+                            <input type="number" id="input-km-end" placeholder="Odómetro" class="w-full p-2 bg-white rounded-lg font-bold border-2 border-slate-200 focus:border-blue-500">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-1 opacity-60">
-                            <label class="text-[9px] font-black uppercase">Cierre</label>
-                            <input type="time" id="input-time-end" class="w-full p-2 bg-white rounded-lg font-bold" readonly>
+                        <div class="space-y-1">
+                            <label class="text-[9px] font-black uppercase opacity-60">Hora Inicio</label>
+                            <input type="time" id="input-time-start" class="w-full p-2 bg-white rounded-lg font-bold">
                         </div>
                         <div class="space-y-1">
-                            <label class="text-[9px] font-black uppercase font-bold text-slate-800">KM Término</label>
-                            <input type="number" id="input-km-end" placeholder="Odómetro" class="w-full p-2 bg-white rounded-lg font-bold border-2 border-slate-200 focus:border-blue-500">
+                            <label class="text-[9px] font-black uppercase opacity-60">Hora Cierre</label>
+                            <input type="time" id="input-time-end" class="w-full p-2 bg-white rounded-lg font-bold">
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4">
                     <div class="border-l-4 border-black pl-4 space-y-2">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Uber</p>
+                        <p class="text-[10px] font-black uppercase text-slate-400">Uber App</p>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="number" id="uber-bruto" placeholder="Bruto App $" class="w-full p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
-                            <input type="number" id="uber-cash" placeholder="Efectivo $" class="w-full p-3 bg-orange-50 rounded-xl font-bold text-xs text-orange-700">
+                            <input type="number" id="uber-bruto" placeholder="Bruto $" class="p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
+                            <input type="number" id="uber-cash" placeholder="Efectivo $" class="p-3 bg-orange-50 rounded-xl font-bold text-xs text-orange-700">
                         </div>
                     </div>
                     <div class="border-l-4 border-[#7343e2] pl-4 space-y-2">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Cabify</p>
+                        <p class="text-[10px] font-black uppercase text-slate-400">Cabify App</p>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="number" id="cabify-bruto" placeholder="Bruto App $" class="w-full p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
-                            <input type="number" id="cabify-cash" placeholder="Efectivo $" class="w-full p-3 bg-orange-50 rounded-xl font-bold text-xs text-orange-700">
+                            <input type="number" id="cabify-bruto" placeholder="Bruto $" class="p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
+                            <input type="number" id="cabify-cash" placeholder="Efectivo $" class="p-3 bg-orange-50 rounded-xl font-bold text-xs text-orange-700">
                         </div>
                     </div>
                 </div>
 
-                <!-- GASTOS INDIVIDUALES -->
                 <div class="space-y-4">
                     <div class="flex justify-between items-center px-1">
-                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest italic">Gastos del Turno</label>
-                        <div class="text-[9px] font-bold text-slate-400">SII (15.25%): $<span id="display-tax">0</span></div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase italic">Registro de Gastos</label>
+                        <div class="text-[9px] font-bold text-slate-400">Retención SII: $<span id="display-tax">0</span></div>
                     </div>
-
-                    <div class="space-y-2">
-                        <div class="flex gap-2">
-                            <div class="relative flex-1">
-                                <i data-lucide="route" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 w-4 h-4"></i>
-                                <input type="number" id="tag-input" placeholder="Monto pórtico..." class="w-full pl-10 p-3 bg-blue-50/50 border border-blue-100 rounded-xl font-bold text-xs">
-                            </div>
-                            <button onclick="addIndividualExpense('tag')" class="bg-blue-600 text-white w-12 rounded-xl font-black text-xl active:scale-90 shadow-md">+</button>
-                        </div>
-                        <div id="tag-list" class="flex flex-wrap gap-2"></div>
+                    <div class="flex gap-2">
+                        <input type="number" id="tag-input" placeholder="Monto pórtico..." class="flex-1 p-3 bg-blue-50/50 border border-blue-100 rounded-xl font-bold text-xs">
+                        <button onclick="addExp('tag')" class="bg-blue-600 text-white w-12 rounded-xl font-black text-xl shadow-md active:scale-90">+</button>
                     </div>
-
-                    <div class="space-y-2">
-                        <div class="flex gap-2">
-                            <div class="relative flex-1">
-                                <i data-lucide="fuel" class="absolute left-3 top-1/2 -translate-y-1/2 text-orange-400 w-4 h-4"></i>
-                                <input type="number" id="fuel-input" placeholder="Carga petróleo..." class="w-full pl-10 p-3 bg-orange-50/50 border border-orange-100 rounded-xl font-bold text-xs">
-                            </div>
-                            <button onclick="addIndividualExpense('fuel')" class="bg-orange-600 text-white w-12 rounded-xl font-black text-xl active:scale-90 shadow-md">+</button>
-                        </div>
-                        <div id="fuel-list" class="flex flex-wrap gap-2"></div>
+                    <div id="tag-list" class="flex flex-wrap gap-2"></div>
+                    <div class="flex gap-2">
+                        <input type="number" id="fuel-input" placeholder="Carga petróleo..." class="flex-1 p-3 bg-orange-50/50 border border-orange-100 rounded-xl font-bold text-xs">
+                        <button onclick="addExp('fuel')" class="bg-orange-600 text-white w-12 rounded-xl font-black text-xl shadow-md active:scale-90">+</button>
                     </div>
+                    <div id="fuel-list" class="flex flex-wrap gap-2"></div>
                 </div>
 
                 <button onclick="processEntry()" type="button" class="btn-primary w-full text-white font-black py-5 rounded-2xl flex justify-center items-center gap-3 active:scale-95 transition-all text-xs tracking-widest uppercase shadow-xl">
@@ -223,236 +192,245 @@
         <!-- HISTORIAL -->
         <section class="space-y-3 pb-10">
             <div class="flex justify-between items-center px-1">
-                <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-widest italic">Registros en el Teléfono</h3>
-                <button onclick="openConfirmReset()" class="text-[10px] font-bold text-red-400 uppercase underline">Reset</button>
+                <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-widest italic">Sesiones Guardadas</h3>
+                <button onclick="openConfirmReset()" class="text-[10px] font-bold text-red-400 uppercase underline">Borrar Todo</button>
             </div>
             <div id="history-container" class="space-y-3"></div>
         </section>
     </main>
 
-    <!-- Modal Cierre -->
+    <!-- MODAL CIERRE -->
     <div id="result-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] items-end justify-center modal-base p-4">
         <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl space-y-6 mb-[env(safe-area-inset-bottom)] text-slate-800">
             <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto -mt-2"></div>
-            <div class="text-center">
-                <h4 class="text-2xl font-black uppercase tracking-tighter italic">Cierre Maestro</h4>
-                <p id="modal-date" class="text-[10px] text-slate-400 font-black mt-2 uppercase"></p>
-            </div>
+            <h4 class="text-2xl font-black uppercase text-center tracking-tighter italic">Resumen de Turno</h4>
             <div id="modal-summary" class="space-y-3 bg-slate-50 p-6 rounded-3xl border border-slate-100 font-bold text-xs"></div>
-            <div id="bank-box" class="p-5 rounded-3xl border bg-blue-900 text-white text-center shadow-lg">
-                <p class="text-[9px] font-black uppercase mb-2 opacity-60">Cuadre Bancario</p>
-                <div class="flex justify-between mb-2 opacity-80"><span>Ya tienes en efectivo:</span><span id="modal-cash" class="font-black text-orange-400"></span></div>
+            <div class="p-5 rounded-3xl border bg-blue-900 text-white text-center shadow-lg">
+                <p class="text-[9px] font-black uppercase mb-2 opacity-60 tracking-widest">Cuadre Bancario</p>
+                <div class="flex justify-between mb-2 opacity-80 text-[10px]"><span>Dinero en Efectivo:</span><span id="modal-cash" class="font-black text-orange-400"></span></div>
                 <div class="border-t border-white/20 my-2"></div>
-                <p class="font-bold italic mb-1 text-blue-200 text-[10px]">Transferencia App pendiente:</p>
+                <p class="font-bold italic mb-1 text-blue-200 text-[10px]">Transferencia Pendiente:</p>
                 <span id="modal-bank" class="text-2xl font-black tracking-tight"></span>
             </div>
-            <button onclick="closeModal('result-modal')" class="btn-primary w-full text-white font-black py-5 rounded-2xl uppercase tracking-widest active:scale-95 transition-all text-xs">Entendido, Maestro</button>
+            <button onclick="closeModal('result-modal')" class="btn-primary w-full text-white font-black py-5 rounded-2xl uppercase tracking-widest active:scale-95 text-xs text-white">Entendido, Maestro</button>
         </div>
     </div>
 
-    <!-- Modal Reset -->
-    <div id="reset-confirm-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] items-center justify-center p-4 modal-base">
+    <!-- ELIMINAR REGISTRO -->
+    <div id="delete-item-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] items-center justify-center p-6 modal-base text-slate-800">
+        <div class="bg-white w-full max-w-xs rounded-3xl p-6 text-center space-y-4">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto"><i data-lucide="trash-2" size="32"></i></div>
+            <h4 class="text-xl font-black uppercase">¿Borrar sesión?</h4>
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button onclick="closeModal('delete-item-modal')" class="bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase">No</button>
+                <button id="btn-confirm-delete" class="bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase shadow-lg text-white">Borrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reset-confirm-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] items-center justify-center p-4 modal-base text-slate-800">
         <div class="bg-white w-full max-w-xs rounded-3xl p-6 text-center space-y-4">
             <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto"><i data-lucide="alert-triangle" size="32"></i></div>
-            <h4 class="text-xl font-black text-slate-800 uppercase tracking-tighter">¿Borrar historial?</h4>
+            <h4 class="text-xl font-black uppercase">¿Limpiar todo?</h4>
             <div class="grid grid-cols-2 gap-3 pt-2">
                 <button onclick="closeModal('reset-confirm-modal')" class="bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase">No</button>
-                <button onclick="clearAll()" class="bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase">Sí, Borrar</button>
+                <button onclick="clearAll()" class="bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase text-white">Sí, Borrar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // DATOS REALES CORREGIDOS
+        // DATOS REALES VERIFICADOS (17 MAR CON CABIFY $39.306)
         const initialData = [
-            { id: 1004, fullDate: "17/03", dateStr: "17 mar", time: "09:21 - 21:30", hours: 12.1, kmTotal: 85, uBruto: 20128, cBruto: 39890, bruto: 60018, tax: 9153, net: 50865, cash: 0, fuel: 0, tag: 584, bank: 50865 },
-            { id: 1003, fullDate: "16/03", dateStr: "16 mar", time: "06:51 - 20:30", hours: 13.6, kmTotal: 145, uBruto: 108675, cBruto: 7955, bruto: 116630, tax: 17786, net: 98844, cash: 0, fuel: 17000, tag: 0, bank: 98844 },
-            { id: 1002, fullDate: "09/03", dateStr: "02 mar - 09 mar", time: "Semanal", hours: 45, kmTotal: 650, uBruto: 321970, cBruto: 0, bruto: 321970, tax: 45842, net: 276128, cash: 64991, fuel: 0, tag: 14409, bank: 211137 },
-            { id: 1001, fullDate: "02/03", dateStr: "23 feb - 02 mar", time: "Semanal", hours: 50, kmTotal: 800, uBruto: 464372, cBruto: 0, bruto: 464372, tax: 65290, net: 399082, cash: 48382, fuel: 0, tag: 15348, bank: 350700 }
+            { id: 1004, dateKey: "17/03/2026", dateStr: "17 mar", km: 85, uB: 20128, cB: 39306, br: 59434, tx: 9064, nt: 50370, cs: 0, fl: 0, tg: 584, h: 6.9, time: "09:21 - 22:15" },
+            { id: 1003, dateKey: "16/03/2026", dateStr: "16 mar", km: 145, uB: 108675, cB: 7955, br: 116630, tx: 17786, nt: 98844, cs: 0, fl: 17000, tg: 0, h: 13.6, time: "06:51 - 20:30" }
         ];
 
         let db = JSON.parse(localStorage.getItem('master_301_audit_vfinal')) || initialData;
         let currentView = 'semanal';
-        let currentSessionTags = [];
-        let currentSessionFuel = [];
+        let sessTags = [];
+        let sessFuel = [];
+        let deletingId = null;
 
-        function safeRenderIcons() { if (window.lucide) { window.lucide.createIcons(); } }
-        function getNowTime() { const now = new Date(); return now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0'); }
+        function safeIcons() { if (window.lucide) { window.lucide.createIcons(); } }
+        function getTime() { const n = new Date(); return n.getHours().toString().padStart(2, '0') + ":" + n.getMinutes().toString().padStart(2, '0'); }
 
-        function addIndividualExpense(type) {
-            const input = document.getElementById(`${type}-input`);
-            const val = parseInt(input.value);
-            if (!val || val <= 0) return;
-            if (type === 'tag') currentSessionTags.push(val); else currentSessionFuel.push(val);
-            input.value = ''; renderExpenseLists();
+        window.addExp = function(type) {
+            const i = document.getElementById(`${type}-input`);
+            const v = parseInt(i.value); if (!v || v <= 0) return;
+            if (type === 'tag') sessTags.push(v); else sessFuel.push(v);
+            i.value = ''; renderExps();
         }
 
-        function removeIndividualExpense(type, index) {
-            if (type === 'tag') currentSessionTags.splice(index, 1); else currentSessionFuel.splice(index, 1);
-            renderExpenseLists();
+        window.removeExp = function(type, idx) {
+            if (type === 'tag') sessTags.splice(idx, 1); else sessFuel.splice(idx, 1);
+            renderExps();
         }
 
-        function renderExpenseLists() {
-            document.getElementById('tag-list').innerHTML = currentSessionTags.map((m, i) => `<div class="expense-chip flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-1 rounded-lg text-[10px] font-black">$${m.toLocaleString('es-CL')} <button onclick="removeIndividualExpense('tag', ${i})" class="ml-1 text-blue-400">×</button></div>`).join('');
-            document.getElementById('fuel-list').innerHTML = currentSessionFuel.map((m, i) => `<div class="expense-chip flex items-center gap-1 bg-orange-100 text-orange-700 px-2 py-1 rounded-lg text-[10px] font-black">$${m.toLocaleString('es-CL')} <button onclick="removeIndividualExpense('fuel', ${i})" class="ml-1 text-orange-400">×</button></div>`).join('');
+        function renderExps() {
+            document.getElementById('tag-list').innerHTML = sessTags.map((m, i) => `<div class="expense-chip flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-1 rounded-lg text-[10px] font-black">$${m.toLocaleString('es-CL')} <button onclick="removeExp('tag', ${i})" class="ml-1 text-blue-400">×</button></div>`).join('');
+            document.getElementById('fuel-list').innerHTML = sessFuel.map((m, i) => `<div class="expense-chip flex items-center gap-1 bg-orange-100 text-orange-700 px-2 py-1 rounded-lg text-[10px] font-black">$${m.toLocaleString('es-CL')} <button onclick="removeExp('fuel', ${i})" class="ml-1 text-orange-400">×</button></div>`).join('');
         }
 
-        function autoCalc() {
-            const uB = parseFloat(document.getElementById('uber-bruto').value) || 0;
-            const cB = parseFloat(document.getElementById('cabify-bruto').value) || 0;
-            document.getElementById('display-tax').innerText = Math.round((uB + cB) * 0.1525).toLocaleString('es-CL');
+        window.autoCalc = function() {
+            const u = parseFloat(document.getElementById('uber-bruto').value) || 0;
+            const c = parseFloat(document.getElementById('cabify-bruto').value) || 0;
+            document.getElementById('display-tax').innerText = Math.round((u+c)*0.1525).toLocaleString('es-CL');
         }
 
-        function setView(v) {
+        window.setView = function(v) {
             currentView = v;
-            document.getElementById('view-semanal').className = `toggle-btn px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${v === 'semanal' ? 'active' : ''}`;
-            document.getElementById('view-mensual').className = `toggle-btn px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${v === 'mensual' ? 'active' : ''}`;
-            document.getElementById('view-label').innerText = v === 'semanal' ? 'Neto Bolsillo (Esta Semana)' : 'Neto Bolsillo (Este Mes)';
+            document.getElementById('view-semanal').className = `toggle-btn px-4 py-1.5 rounded-lg text-[10px] uppercase ${v === 'semanal' ? 'active' : ''}`;
+            document.getElementById('view-mensual').className = `toggle-btn px-4 py-1.5 rounded-lg text-[10px] uppercase ${v === 'mensual' ? 'active' : ''}`;
+            document.getElementById('view-label').innerText = v === 'semanal' ? 'Neto Real al Bolsillo (Semana)' : 'Neto Real al Bolsillo (Mes)';
             refreshUI();
         }
 
-        function isThisWeek(dateStr) {
-            const now = new Date();
-            const day = now.getDay();
-            const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-            const monday = new Date(now.setDate(diff)); monday.setHours(0,0,0,0);
-            const [d, m] = dateStr.split('/');
-            const rec = new Date(new Date().getFullYear(), parseInt(m)-1, parseInt(d));
-            return rec >= monday;
+        function getStartOfWeek() {
+            const n = new Date(); const day = n.getDay();
+            const diff = n.getDate() - day + (day === 0 ? -6 : 1);
+            const mon = new Date(n.setDate(diff)); mon.setHours(0,0,0,0);
+            return mon;
+        }
+
+        function filterData() {
+            const mon = getStartOfWeek();
+            return db.filter(l => {
+                const parts = l.dateKey.split('/');
+                const d = new Date(parts[2], parts[1]-1, parts[0]);
+                if (currentView === 'semanal') return d >= mon;
+                return parseInt(parts[1]) === (new Date().getMonth() + 1);
+            });
         }
 
         function updateChart() {
-            const chartBars = document.getElementById('chart-bars');
-            const chartLabels = document.getElementById('chart-labels');
-            if (!chartBars) return;
-            const daysLabels = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-            const today = new Date();
-            let dailyTotals = {};
-            db.forEach(log => { if (!dailyTotals[log.fullDate]) dailyTotals[log.fullDate] = 0; dailyTotals[log.fullDate] += (log.bruto || 0); });
-            let bHTML = ''; let lHTML = '';
-            for (let i = 6; i >= 0; i--) {
-                const d = new Date(); d.setDate(today.getDate() - i);
-                const dL = daysLabels[d.getDay()];
-                const dK = d.getDate().toString().padStart(2, '0') + '/' + (d.getMonth() + 1).toString().padStart(2, '0');
-                const val = dailyTotals[dK] || 0;
-                const h = (val / 120000) * 100;
-                bHTML += `<div class="bar ${val > 0 ? (i===0?'bg-blue-400 shadow-lg':'bg-blue-600') : 'bg-white/10'}" style="height: ${Math.max(h, 5)}%"><div class="tooltip">$${Math.round(val).toLocaleString('es-CL')}</div></div>`;
-                lHTML += `<div class="bar-label" style="width:100%">${dL}</div>`;
+            const cb = document.getElementById('chart-bars'); const cl = document.getElementById('chart-labels');
+            if (!cb) return;
+            const dL = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+            const mon = getStartOfWeek(); let dailyT = {};
+            db.forEach(l => { if (!dailyT[l.dateKey]) dailyT[l.dateKey] = 0; dailyT[l.dateKey] += (l.br || 0); });
+            
+            let bars = ''; let labels = '';
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(mon); d.setDate(mon.getDate() + i);
+                const k = d.getDate().toString().padStart(2, '0') + '/' + (d.getMonth()+1).toString().padStart(2, '0') + '/' + d.getFullYear();
+                const v = dailyT[k] || 0;
+                const maxVal = Math.max(...Object.values(dailyT), 50000);
+                const h = (v / maxVal) * 100;
+                bars += `<div class="bar ${v > 0 ? 'bg-blue-500 shadow-md' : 'bg-white/10'}" style="height: ${Math.max(h, 4)}%"><div class="tooltip">$${v.toLocaleString('es-CL')}</div></div>`;
+                labels += `<div class="bar-label" style="width:14%">${dL[i]}<br><span class="opacity-40">${d.getDate()}</span></div>`;
             }
-            chartBars.innerHTML = bHTML; chartLabels.innerHTML = lHTML;
+            cb.innerHTML = bars; cl.innerHTML = labels;
         }
 
-        function processEntry() {
-            const timeEnd = getNowTime();
-            const sKm = parseFloat(document.getElementById('input-km-start').value);
-            const eKm = parseFloat(document.getElementById('input-km-end').value);
-            const uB = parseFloat(document.getElementById('uber-bruto').value) || 0;
-            const cB = parseFloat(document.getElementById('cabify-bruto').value) || 0;
-            const uC = parseFloat(document.getElementById('uber-cash').value) || 0;
-            const cC = parseFloat(document.getElementById('cabify-cash').value) || 0;
+        window.processEntry = function() {
+            const h1 = document.getElementById('input-time-start').value;
+            const h2 = document.getElementById('input-time-end').value;
+            const sk = parseFloat(document.getElementById('input-km-start').value);
+            const ek = parseFloat(document.getElementById('input-km-end').value);
+            const ub = parseFloat(document.getElementById('uber-bruto').value) || 0;
+            const cb = parseFloat(document.getElementById('cabify-bruto').value) || 0;
+            const uc = parseFloat(document.getElementById('uber-cash').value) || 0;
+            const cc = parseFloat(document.getElementById('cabify-cash').value) || 0;
 
-            if (isNaN(sKm) || isNaN(eKm)) { alert("Ingresa KM inicial y final."); return; }
-            if (eKm < sKm) { alert("KM Término incorrecto."); return; }
-            if ((uB + cB) === 0) { alert("Ingresa ganancias."); return; }
+            if (isNaN(sk) || isNaN(ek) || (ub + cb) === 0 || !h1 || !h2) { alert("Ingresa todos los datos: KM, Horas y Brutos."); return; }
+            if (ek < sk) { alert("KM Término inválido."); return; }
 
-            const [h1, m1] = document.getElementById('input-time-start').value.split(':').map(Number);
-            const [h2, m2] = timeEnd.split(':').map(Number);
-            let dM = (h2 * 60 + m2) - (h1 * 60 + m1); if (dM < 0) dM += 1440;
+            const [startH, startM] = h1.split(':').map(Number);
+            const [endH, endM] = h2.split(':').map(Number);
+            let dm = (endH * 60 + endM) - (startH * 60 + startM); if (dm < 0) dm += 1440;
             
-            const now = new Date();
-            const sumT = currentSessionTags.reduce((a,b)=>a+b, 0);
-            const sumF = currentSessionFuel.reduce((a,b)=>a+b, 0);
-            const taxTotal = Math.round((uB + cB) * 0.1525);
-            const netReal = Math.round((uB + cB) * 0.8475);
+            const n = new Date();
+            const flTotal = sessFuel.reduce((a,b)=>a+b, 0);
+            const tgTotal = sessTags.reduce((a,b)=>a+b, 0);
+            const brutoTotal = ub + cb; const taxTotal = Math.round(brutoTotal * 0.1525); const netTotal = Math.round(brutoTotal * 0.8475);
 
-            const entry = {
+            const e = {
                 id: Date.now(),
-                fullDate: now.getDate().toString().padStart(2, '0') + '/' + (now.getMonth() + 1).toString().padStart(2, '0'),
-                dateStr: new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short' }).format(now),
-                time: `${document.getElementById('input-time-start').value} - ${timeEnd}`,
-                hours: dM / 60, kmTotal: eKm - sKm,
-                uBruto: uB, cBruto: cB, bruto: uB + cB, cash: uC + cC, fuel: sumF, tag: sumT, tax: taxTotal,
-                net: netReal, bank: netReal - (uC + cC)
+                dateKey: n.getDate().toString().padStart(2, '0') + '/' + (n.getMonth() + 1).toString().padStart(2, '0') + '/' + n.getFullYear(),
+                dateStr: new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short' }).format(n),
+                km: ek - sk, uB: ub, cB: cb, br: brutoTotal, cs: uc + cc, fl: flTotal, tg: tgTotal, tx: taxTotal, nt: netTotal, bk: netTotal - (uc + cc), h: dm / 60, time: `${h1} - ${h2}`
             };
 
-            db.unshift(entry);
-            localStorage.setItem('master_301_audit_vfinal', JSON.stringify(db));
+            db.unshift(e); localStorage.setItem('master_301_audit_vfinal', JSON.stringify(db));
+            sessTags = []; sessFuel = []; document.getElementById('input-km-start').value = ek;
+            ['input-km-end', 'uber-bruto', 'uber-cash', 'cabify-bruto', 'cabify-cash', 'input-time-start', 'input-time-end'].forEach(id => document.getElementById(id).value = "");
+            renderExps(); refreshUI();
             
-            currentSessionTags = []; currentSessionFuel = [];
-            document.getElementById('input-km-start').value = eKm;
-            ['input-km-end', 'uber-bruto', 'uber-cash', 'cabify-bruto', 'cabify-cash'].forEach(id => document.getElementById(id).value = "");
-            renderExpenseLists(); refreshUI(); showResult(entry);
+            document.getElementById('modal-summary').innerHTML = `<div class="flex justify-between"><span>Recorrido:</span><span>${e.km} KM</span></div><div class="flex justify-between"><span>Ganancia Bruta:</span><span>$${e.br.toLocaleString('es-CL')}</span></div><div class="flex justify-between text-red-500 font-bold"><span>Retención SII (15.25%):</span><span>-$${e.tx.toLocaleString('es-CL')}</span></div><div class="border-t border-slate-200 mt-3 pt-3 flex justify-between font-black text-slate-900"><span>Líquido Neto:</span><span class="text-green-700 text-lg">$${e.nt.toLocaleString('es-CL')}</span></div>`;
+            document.getElementById('modal-cash').innerText = `$${e.cs.toLocaleString('es-CL')}`;
+            document.getElementById('modal-bank').innerText = `$${Math.round(e.bk).toLocaleString('es-CL')}`;
+            document.getElementById('result-modal').classList.add('active'); safeIcons();
         }
 
         function refreshUI() {
-            const filtered = db.filter(log => currentView === 'semanal' ? isThisWeek(log.fullDate) : true);
-            const totals = filtered.reduce((acc, log) => {
-                acc.net += log.net; acc.bruto += log.bruto; acc.uB += (log.uBruto || 0); acc.cB += (log.cBruto || 0);
-                acc.km += log.kmTotal; acc.h += (parseFloat(log.hours) || 0); 
-                acc.f += (parseFloat(log.fuel) || 0); acc.t += (parseFloat(log.tag) || 0);
-                return acc;
-            }, { net: 0, bruto: 0, uB: 0, cB: 0, km: 0, h: 0, f: 0, t: 0 });
+            const fD = filterData();
+            const uniqueDays = [...new Set(fD.map(l => l.dateKey))].length;
+            const t = fD.reduce((a, l) => {
+                a.n += (l.nt || 0); a.b += (l.br || 0); a.u += (l.uB || 0); a.c += (l.cB || 0);
+                a.k += (l.km || 0); a.h += (l.h || 0); a.f += (l.fl || 0); a.t += (l.tg || 0);
+                return a;
+            }, { n: 0, b: 0, u: 0, c: 0, k: 0, h: 0, f: 0, t: 0 });
 
-            document.getElementById('total-net-display').innerText = `$${Math.round(totals.net).toLocaleString('es-CL')}`;
-            document.getElementById('total-bruto-header').innerText = `$${Math.round(totals.bruto).toLocaleString('es-CL')}`;
-            document.getElementById('uber-bruto-display').innerText = `$${Math.round(totals.uB).toLocaleString('es-CL')}`;
-            document.getElementById('cabify-bruto-display').innerText = `$${Math.round(totals.cB).toLocaleString('es-CL')}`;
-            document.getElementById('total-km-display').innerText = `${Math.round(totals.km).toLocaleString('es-CL')} KM`;
-            document.getElementById('total-hours-display').innerText = `${totals.h.toFixed(1)} HRS`;
-            document.getElementById('total-fuel-display').innerText = `$${Math.round(totals.f).toLocaleString('es-CL')}`;
-            document.getElementById('total-tag-display').innerText = `$${Math.round(totals.t).toLocaleString('es-CL')}`;
+            const avgRent = t.k > 0 ? Math.round(t.b / t.k) : 0;
+            const avgKm = uniqueDays > 0 ? Math.round(t.k / uniqueDays) : 0;
+
+            document.getElementById('total-net-display').innerText = `$${Math.round(t.n).toLocaleString('es-CL')}`;
+            document.getElementById('total-bruto-header').innerText = `$${Math.round(t.b).toLocaleString('es-CL')}`;
+            document.getElementById('uber-bruto-display').innerText = `$${Math.round(t.u).toLocaleString('es-CL')}`;
+            document.getElementById('cabify-bruto-display').innerText = `$${Math.round(t.c).toLocaleString('es-CL')}`;
+            document.getElementById('total-km-display').innerText = `${Math.round(t.k).toLocaleString('es-CL')} KM`;
+            document.getElementById('avg-rent-display').innerText = `$${avgRent}/KM`;
+            document.getElementById('avg-km-display').innerText = `${avgKm} KM/DÍA`;
+            document.getElementById('total-hours-display').innerText = `${t.h.toFixed(1)} HRS TRABAJADAS`;
+            document.getElementById('total-fuel-display').innerText = `$${Math.round(t.f).toLocaleString('es-CL')}`;
+            document.getElementById('total-tag-display').innerText = `$${Math.round(t.t).toLocaleString('es-CL')}`;
+            
             updateChart(); renderHistory(); autoCalc();
         }
 
         function renderHistory() {
-            document.getElementById('history-container').innerHTML = db.map(log => `
-                <div class="card p-4 border border-slate-100 mb-3 shadow-sm text-slate-800">
-                    <div class="flex justify-between items-start mb-2">
-                        <div class="bg-blue-900 text-white px-2 py-1 rounded-lg text-[9px] font-black uppercase">${log.dateStr}</div>
+            document.getElementById('history-container').innerHTML = db.map(l => {
+                const pk = (l.km || 0) > 0 ? Math.round((l.br || 0) / l.km) : 0;
+                return `
+                <div class="card p-4 border border-slate-100 mb-3 shadow-sm text-slate-800 relative">
+                    <button onclick="confirmDelete(${l.id})" class="absolute top-4 right-4 bg-red-50 p-2 rounded-full text-red-600 active:scale-90 transition-transform"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <div class="flex justify-between items-start mb-2 pr-10">
+                        <div class="bg-blue-900 text-white px-2 py-1 rounded-lg text-[9px] font-black uppercase text-white tracking-wider">${l.dateStr}</div>
                         <div class="text-right">
-                            <p class="text-sm font-black text-green-600">$${Math.round(log.net).toLocaleString('es-CL')} NETO</p>
-                            <p class="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Bruto: $${Math.round(log.bruto).toLocaleString('es-CL')}</p>
+                            <p class="text-sm font-black text-green-600 leading-none">$${Math.round(l.nt || 0).toLocaleString('es-CL')} NETO</p>
+                            <p class="text-[8px] font-bold text-slate-400 mt-1 uppercase">Bruto: $${Math.round(l.br || 0).toLocaleString('es-CL')}</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 text-[9px] border-t border-slate-50 pt-2 text-slate-600">
-                        <div><p class="font-bold text-slate-800 italic">${log.kmTotal} KM | ${log.time}</p>
-                            <div class="flex gap-2 mt-2">
-                                ${log.fuel > 0 ? `<span class="bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full font-black">⛽ $${log.fuel.toLocaleString('es-CL')}</span>` : ''}
-                                ${log.tag > 0 ? `<span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-black">🛣️ $${log.tag.toLocaleString('es-CL')}</span>` : ''}
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-1 text-[8px] font-bold">
-                            <div class="flex justify-between"><span>UBER:</span> <span class="text-slate-900">$${Math.round(log.uBruto || 0).toLocaleString('es-CL')}</span></div>
-                            <div class="flex justify-between"><span>CABIFY:</span> <span class="text-[#7343e2]">$${Math.round(log.cBruto || 0).toLocaleString('es-CL')}</span></div>
+                    <div class="grid grid-cols-2 gap-4 text-[9px] border-t border-slate-50 pt-2 text-slate-600 font-bold">
+                        <div><p>${l.km || 0} KM | $${pk}/KM</p><p class="text-[7px] font-normal italic opacity-60">${l.time || 'Registro'}</p></div>
+                        <div class="flex flex-col gap-1 text-[8px]">
+                            <div class="flex justify-between"><span>UBER:</span><span class="text-black">$${Math.round(l.uB || 0).toLocaleString('es-CL')}</span></div>
+                            <div class="flex justify-between"><span>CABIFY:</span><span class="text-[#7343e2]">$${Math.round(l.cB || 0).toLocaleString('es-CL')}</span></div>
+                            <div class="flex gap-1 mt-1">${l.fl>0?`<span class="bg-orange-50 text-orange-600 px-1 rounded">⛽ $${l.fl.toLocaleString('es-CL')}</span>`:''}${l.tg>0?`<span class="bg-blue-50 text-blue-600 px-1 rounded">🛣️ $${l.tg.toLocaleString('es-CL')}</span>`:''}</div>
                         </div>
                     </div>
-                </div>`).join('');
-            safeRenderIcons();
-        }
-
-        function showResult(log) {
-            document.getElementById('modal-date').innerText = `${log.dateStr} | ${log.time}`;
-            document.getElementById('modal-summary').innerHTML = `
-                <div class="flex justify-between"><span>Distancia:</span> <span>${log.kmTotal} KM</span></div>
-                <div class="flex justify-between"><span>Bruto Total:</span> <span>$${log.bruto.toLocaleString('es-CL')}</span></div>
-                <div class="flex justify-between text-red-500 font-bold"><span>SII (15.25%):</span> <span>-$${log.tax.toLocaleString('es-CL')}</span></div>
-                <div class="border-t border-slate-200 mt-3 pt-3 flex justify-between items-center text-slate-900 font-black">
-                    <span class="text-[9px] font-black uppercase opacity-40 italic">Líquido Neto:</span>
-                    <span class="text-xl font-black text-green-700">$${Math.round(log.net).toLocaleString('es-CL')}</span>
                 </div>`;
-            document.getElementById('modal-cash').innerText = `$${log.cash.toLocaleString('es-CL')}`;
-            document.getElementById('modal-bank').innerText = `$${Math.round(log.bank).toLocaleString('es-CL')}`;
-            document.getElementById('result-modal').classList.add('active'); safeRenderIcons();
+            }).join('');
+            safeIcons();
         }
 
-        function openConfirmReset() { document.getElementById('reset-confirm-modal').classList.add('active'); safeRenderIcons(); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function clearAll() { localStorage.removeItem('master_301_audit_vfinal'); location.reload(); }
+        window.confirmDelete = function(id) { deletingId = id; document.getElementById('delete-item-modal').classList.add('active'); safeIcons(); }
+        window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
+        window.openConfirmReset = function() { document.getElementById('reset-confirm-modal').classList.add('active'); safeIcons(); }
+        window.clearAll = function() { localStorage.removeItem('master_301_audit_vfinal'); location.reload(); }
+
+        document.getElementById('btn-confirm-delete').onclick = () => {
+            if (deletingId) {
+                db = db.filter(i => i.id !== deletingId);
+                localStorage.setItem('master_301_audit_vfinal', JSON.stringify(db));
+                deletingId = null; closeModal('delete-item-modal'); refreshUI();
+            }
+        };
 
         window.addEventListener('load', () => {
             document.getElementById('display-date').innerText = new Intl.DateTimeFormat('es-CL', { day: 'numeric', month: 'short' }).format(new Date());
-            document.getElementById('input-time-start').value = getNowTime();
-            refreshUI(); safeRenderIcons();
+            refreshUI(); safeIcons();
         });
     </script>
 </body>
