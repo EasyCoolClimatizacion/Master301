@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Master 301">
-    <meta name="theme-color" content="#1e3a8a">
-    
     <title>Master Driver 301 - Auditoría Pro</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,31 +14,34 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
         :root { --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
-        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; background-color: #f8fafc; color: #1e293b; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
         .app-container { padding-top: calc(0.5rem + var(--safe-top)); padding-bottom: calc(2rem + var(--safe-bottom)); }
         .card { border-radius: 1.25rem; background: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0,0,0,0.05); }
         input { font-size: 16px !important; border: none !important; outline: none !important; }
-        .btn-primary { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.3); }
+        .btn-primary { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.3); color: white !important; }
         .modal-base { display: none; }
         .modal-base.active { display: flex !important; animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
-        .bar-container { height: 100px; display: flex; align-items: flex-end; justify-content: space-between; gap: 4px; }
-        .bar { width: 100%; border-radius: 4px 4px 2px 2px; transition: height 0.6s ease-in-out; min-height: 2px; position: relative; }
+        .bar-container { height: 110px; display: flex; align-items: flex-end; justify-content: space-between; gap: 4px; }
+        .bar { width: 100%; border-radius: 6px 6px 2px 2px; transition: height 0.6s ease-in-out; min-height: 4px; position: relative; }
         .bar-label { font-size: 7px; font-weight: 900; color: #94a3b8; text-align: center; margin-top: 8px; text-transform: uppercase; line-height: 1.2; }
-        .tooltip { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; font-size: 9px; padding: 4px 6px; border-radius: 6px; display: none; pointer-events: none; white-space: nowrap; z-index: 50; font-weight: bold; }
+        .tooltip { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; font-size: 9px; padding: 4px 6px; border-radius: 6px; display: none; pointer-events: none; z-index: 50; font-weight: bold; white-space: nowrap; }
         .bar:hover .tooltip { display: block; }
         
         .toggle-btn { transition: all 0.2s; border: 1px solid transparent; color: #94a3b8; font-weight: 800; }
-        .toggle-btn.active { background-color: #1e40af; color: white; border-color: #1e40af; }
+        .toggle-btn.active { background-color: #1e40af; color: white !important; border-color: #1e40af; }
+        .success-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 12px 24px; border-radius: 99px; font-weight: 900; z-index: 1000; display: none; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4); }
     </style>
 </head>
 <body class="min-h-screen">
 
+    <div id="toast" class="success-toast uppercase text-xs tracking-widest">¡Datos Guardados con Éxito!</div>
+
     <header class="bg-blue-900 text-white sticky top-0 z-50 shadow-lg pt-[env(safe-area-inset-top)]">
         <div class="max-w-md mx-auto p-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-white p-2 rounded-xl text-blue-900 shadow-lg"><i data-lucide="gauge" class="w-6 h-6"></i></div>
+                <div class="bg-white p-2 rounded-xl text-blue-900 shadow-md"><i data-lucide="gauge" class="w-6 h-6"></i></div>
                 <h1 class="text-lg font-black tracking-tight uppercase italic text-white">Master 301</h1>
             </div>
             <div class="bg-blue-800/50 px-3 py-1.5 rounded-full border border-blue-700">
@@ -52,8 +52,8 @@
 
     <main class="max-w-md mx-auto p-4 space-y-4 app-container">
 
-        <!-- DASHBOARD DE RENDIMIENTO Y GASTOS -->
-        <section class="card p-5 bg-slate-900 text-white relative border-b-4 border-blue-500 shadow-2xl">
+        <!-- DASHBOARD DINÁMICO -->
+        <section class="card p-5 bg-slate-900 text-white relative border-b-4 border-blue-500 shadow-2xl overflow-hidden">
             <div class="flex justify-center mb-6">
                 <div class="flex bg-white/10 p-1 rounded-xl border border-white/10">
                     <button onclick="setView('semanal')" id="view-semanal" class="toggle-btn active px-4 py-1.5 rounded-lg text-[10px] uppercase">Semanal</button>
@@ -68,7 +68,6 @@
                     <p class="text-[10px] font-bold mt-1 opacity-60">Bruto Acumulado: <span id="total-bruto-header" class="text-white font-black">$0</span></p>
                 </div>
 
-                <!-- KPI: Rendimiento y Kilometraje -->
                 <div class="grid grid-cols-3 gap-2">
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5 text-center">
                         <p class="text-[7px] font-black text-slate-400 uppercase mb-1">KM Recorridos</p>
@@ -78,43 +77,43 @@
                         <p class="text-[7px] font-black uppercase mb-1">Valor $/KM</p>
                         <p id="avg-rent-display" class="text-xs font-black text-emerald-300">$0/km</p>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5 text-center">
-                        <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Prom. KM/Día</p>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5 text-center text-slate-400">
+                        <p class="text-[7px] font-black uppercase mb-1">Prom. KM/Día</p>
                         <p id="avg-km-display" class="text-xs font-black text-white">0 KM</p>
                     </div>
                 </div>
 
-                <!-- KPI: SUMA DE GASTOS ACUMULADOS -->
+                <!-- SUMA DE GASTOS ACUMULADOS -->
                 <div class="grid grid-cols-2 gap-2">
                     <div class="bg-orange-500/10 p-3 rounded-2xl border border-orange-500/20 text-center">
                         <p class="text-[7px] font-black text-orange-400 uppercase mb-1">Total Petróleo</p>
-                        <p id="total-fuel-display" class="text-xs font-black text-orange-300 text-orange-300 font-black">$0</p>
+                        <p id="total-fuel-display" class="text-xs font-black text-orange-300">$0</p>
                     </div>
                     <div class="bg-blue-500/10 p-3 rounded-2xl border border-blue-500/20 text-center">
                         <p class="text-[7px] font-black text-blue-400 uppercase mb-1">Total TAG / Peajes</p>
-                        <p id="total-tag-display" class="text-xs font-black text-blue-300 text-blue-300 font-black">$0</p>
+                        <p id="total-tag-display" class="text-xs font-black text-blue-300">$0</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Gráfico Semanal Lunes a Domingo -->
+            <!-- Gráfico Lunes a Domingo -->
             <div class="mt-8 mb-4 px-1">
                 <div id="chart-bars" class="bar-container"></div>
                 <div id="chart-labels" class="flex justify-between"></div>
             </div>
             
-            <div class="grid grid-cols-2 gap-3 mb-4 text-white text-center">
+            <div class="grid grid-cols-2 gap-3 mb-4 text-center">
                 <div class="bg-white/5 rounded-2xl p-3 border border-white/10 shadow-inner">
-                    <p class="text-[8px] font-bold opacity-50 mb-1 tracking-widest text-slate-400 uppercase">Bruto Uber</p>
+                    <p class="text-[8px] font-bold opacity-50 mb-1 uppercase tracking-widest text-slate-400">Uber Acum.</p>
                     <p id="uber-bruto-display" class="font-black text-sm text-white">$0</p>
                 </div>
                 <div class="bg-white/5 rounded-2xl p-3 border border-white/10 shadow-inner">
-                    <p class="text-[8px] font-bold opacity-50 mb-1 tracking-widest text-slate-400 uppercase">Bruto Cabify</p>
+                    <p class="text-[8px] font-bold opacity-50 mb-1 uppercase tracking-widest text-slate-400">Cabify Acum.</p>
                     <p id="cabify-bruto-display" class="font-black text-sm text-white">$0</p>
                 </div>
             </div>
 
-            <div class="border-t border-white/10 pt-3 flex justify-center items-center opacity-60 text-white text-[9px]">
+            <div class="border-t border-white/10 pt-3 text-center opacity-60 text-[9px] text-white">
                 <p id="total-hours-display" class="font-black uppercase tracking-widest">0 HRS TRABAJADAS</p>
             </div>
         </section>
@@ -122,14 +121,14 @@
         <!-- FORMULARIO DE REGISTRO -->
         <section class="card p-6 border-2 border-transparent focus-within:border-blue-500 transition-all shadow-lg">
             <h3 class="text-sm font-black text-slate-800 mb-6 flex items-center gap-2 uppercase italic">
-                <i data-lucide="plus-circle" class="text-emerald-500"></i> Registrar Nuevo Turno
+                <i data-lucide="plus-circle" class="text-emerald-500"></i> Registrar Jornada Mixta
             </h3>
             
             <div class="space-y-6 text-slate-700">
                 <div class="bg-slate-50 p-4 rounded-2xl space-y-4 border border-slate-100 shadow-inner">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
-                            <label class="text-[9px] font-black uppercase opacity-60">KM Inicial</label>
+                            <label class="text-[9px] font-black uppercase opacity-60 text-slate-800">KM Inicial</label>
                             <input type="number" id="input-km-start" placeholder="104878" class="w-full p-2 bg-white rounded-lg font-bold shadow-sm">
                         </div>
                         <div class="space-y-1">
@@ -137,58 +136,43 @@
                             <input type="number" id="input-km-end" placeholder="Odómetro" class="w-full p-2 bg-white rounded-lg font-bold border-2 border-slate-200 focus:border-blue-500">
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[9px] font-black uppercase opacity-60">Hora Inicio</label>
-                            <input type="time" id="input-time-start" class="w-full p-2 bg-white rounded-lg font-bold">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[9px] font-black uppercase opacity-60">Hora Cierre</label>
-                            <input type="time" id="input-time-end" class="w-full p-2 bg-white rounded-lg font-bold">
-                        </div>
-                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4">
                     <div class="border-l-4 border-black pl-4 space-y-2">
-                        <p class="text-[10px] font-black uppercase text-slate-400">Uber App</p>
+                        <p class="text-[10px] font-black uppercase text-slate-400">Uber</p>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="number" id="uber-bruto" placeholder="Bruto $" class="p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
+                            <input type="number" id="uber-bruto" placeholder="Bruto App $" class="p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
                             <input type="number" id="uber-cash" placeholder="Efectivo $" class="p-3 bg-orange-50 rounded-xl font-bold text-xs text-orange-700">
                         </div>
                     </div>
                     <div class="border-l-4 border-[#7343e2] pl-4 space-y-2">
-                        <p class="text-[10px] font-black uppercase text-slate-400">Cabify App</p>
+                        <p class="text-[10px] font-black uppercase text-slate-400">Cabify</p>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="number" id="cabify-bruto" placeholder="Bruto $" class="p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
+                            <input type="number" id="cabify-bruto" placeholder="Bruto App $" class="p-3 bg-slate-100 rounded-xl font-bold text-xs" oninput="autoCalc()">
                             <input type="number" id="cabify-cash" placeholder="Efectivo $" class="p-3 bg-orange-50 rounded-xl font-bold text-xs text-orange-700">
                         </div>
                     </div>
                 </div>
 
-                <!-- GASTOS INDIVIDUALES -->
                 <div class="space-y-4">
                     <div class="flex justify-between items-center px-1">
-                        <label class="text-[10px] font-black text-slate-500 uppercase italic">Gastos del Día</label>
-                        <div class="text-[9px] font-bold text-slate-400">Retención SII (15.25%): $<span id="display-tax">0</span></div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase italic">Gastos del Turno</label>
+                        <div class="text-[9px] font-bold text-slate-400 tracking-tighter">Retención SII: $<span id="display-tax">0</span></div>
                     </div>
-                    <div class="space-y-2">
-                        <div class="flex gap-2">
-                            <input type="number" id="tag-input" placeholder="Monto del pórtico..." class="flex-1 p-3 bg-blue-50/50 border border-blue-100 rounded-xl font-bold text-xs shadow-inner">
-                            <button onclick="addExp('tag')" class="bg-blue-600 text-white w-12 rounded-xl font-black text-xl active:scale-90 shadow-md">+</button>
-                        </div>
-                        <div id="tag-list" class="flex flex-wrap gap-2 min-h-[5px]"></div>
+                    <div class="flex gap-2">
+                        <input type="number" id="tag-input" placeholder="Monto del pórtico..." class="flex-1 p-3 bg-blue-50/50 border border-blue-100 rounded-xl font-bold text-xs">
+                        <button onclick="addExp('tag')" class="bg-blue-600 text-white w-12 rounded-xl font-black text-xl active:scale-90 shadow-md">+</button>
                     </div>
-                    <div class="space-y-2">
-                        <div class="flex gap-2">
-                            <input type="number" id="fuel-input" placeholder="Carga petróleo..." class="flex-1 p-3 bg-orange-50/50 border border-orange-100 rounded-xl font-bold text-xs shadow-inner">
-                            <button onclick="addExp('fuel')" class="bg-orange-600 text-white w-12 rounded-xl font-black text-xl active:scale-90 shadow-md">+</button>
-                        </div>
-                        <div id="fuel-list" class="flex flex-wrap gap-2 min-h-[5px]"></div>
+                    <div id="tag-list" class="flex flex-wrap gap-2"></div>
+                    <div class="flex gap-2">
+                        <input type="number" id="fuel-input" placeholder="Carga petróleo..." class="flex-1 p-3 bg-orange-50/50 border border-orange-100 rounded-xl font-bold text-xs">
+                        <button onclick="addExp('fuel')" class="bg-orange-600 text-white w-12 rounded-xl font-black text-xl active:scale-90 shadow-md">+</button>
                     </div>
+                    <div id="fuel-list" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <button onclick="processEntry()" type="button" class="btn-primary w-full text-white font-black py-5 rounded-2xl flex justify-center items-center gap-3 active:scale-95 transition-all text-xs uppercase shadow-xl tracking-widest text-white">
+                <button onclick="processEntry()" type="button" class="btn-primary w-full text-white font-black py-5 rounded-2xl flex justify-center items-center gap-3 active:scale-95 transition-all text-xs tracking-widest uppercase shadow-xl">
                     <i data-lucide="save"></i> Finalizar Jornada Maestra
                 </button>
             </div>
@@ -197,27 +181,27 @@
         <!-- HISTORIAL -->
         <section class="space-y-3 pb-10">
             <div class="flex justify-between items-center px-1">
-                <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-widest italic text-slate-400 font-black">Historial en el Teléfono</h3>
-                <button onclick="openConfirmReset()" class="text-[10px] font-bold text-red-400 uppercase underline">Reset Diario</button>
+                <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-widest italic font-black">Historial Guardado</h3>
+                <button onclick="openConfirmReset()" class="text-[10px] font-bold text-red-400 uppercase underline">Borrar Todo</button>
             </div>
             <div id="history-container" class="space-y-3"></div>
         </section>
     </main>
 
-    <!-- MODALES -->
+    <!-- MODAL RESULTADO -->
     <div id="result-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] items-end justify-center modal-base p-4 text-slate-800">
         <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl space-y-6 mb-[env(safe-area-inset-bottom)]">
             <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto -mt-2"></div>
-            <h4 class="text-2xl font-black uppercase text-center tracking-tighter italic">Cierre Maestro</h4>
+            <h4 class="text-2xl font-black uppercase text-center italic tracking-tighter">Resumen de Turno</h4>
             <div id="modal-summary" class="space-y-3 bg-slate-50 p-6 rounded-3xl border border-slate-100 font-bold text-xs"></div>
             <div class="p-5 rounded-3xl border bg-blue-900 text-white text-center shadow-lg">
-                <p class="text-[9px] font-black uppercase mb-2 opacity-60">Cuadre con Banco</p>
-                <div class="flex justify-between mb-2 opacity-80 text-[10px] text-white"><span>Efectivo cobrado:</span><span id="modal-cash" class="font-black text-orange-400"></span></div>
+                <p class="text-[9px] font-black uppercase mb-2 opacity-60">Cuadre de Efectivo</p>
+                <div class="flex justify-between mb-2 opacity-80 text-[10px] text-white"><span>Ya cobrado (Cash):</span><span id="modal-cash" class="font-black text-orange-400"></span></div>
                 <div class="border-t border-white/20 my-2"></div>
                 <p class="font-bold italic mb-1 text-blue-200 text-[10px]">Transferencia App pendiente:</p>
-                <span id="modal-bank" class="text-2xl font-black tracking-tight text-white font-black"></span>
+                <span id="modal-bank" class="text-2xl font-black tracking-tight text-white"></span>
             </div>
-            <button onclick="closeModal('result-modal')" class="btn-primary w-full text-white font-black py-5 rounded-2xl uppercase tracking-widest active:scale-95 text-xs text-white">Entendido, Maestro</button>
+            <button onclick="closeModal('result-modal')" class="btn-primary w-full text-white font-black py-5 rounded-2xl uppercase tracking-widest active:scale-95 text-xs">Entendido, Maestro</button>
         </div>
     </div>
 
@@ -225,7 +209,7 @@
     <div id="delete-item-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] items-center justify-center p-6 modal-base text-slate-800">
         <div class="bg-white w-full max-w-xs rounded-3xl p-6 text-center space-y-4">
             <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto"><i data-lucide="trash-2" size="32"></i></div>
-            <h4 class="text-xl font-black uppercase tracking-tighter">¿Borrar esta sesión?</h4>
+            <h4 class="text-xl font-black uppercase tracking-tighter">¿Eliminar sesión?</h4>
             <div class="grid grid-cols-2 gap-3 pt-2">
                 <button onclick="closeModal('delete-item-modal')" class="bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase">No</button>
                 <button id="btn-confirm-delete" class="bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase shadow-lg text-white">Borrar</button>
@@ -233,31 +217,26 @@
         </div>
     </div>
 
-    <div id="reset-confirm-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] items-center justify-center p-4 modal-base text-slate-800">
-        <div class="bg-white w-full max-w-xs rounded-3xl p-6 text-center space-y-4">
-            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto"><i data-lucide="alert-triangle" size="32"></i></div>
-            <h4 class="text-xl font-black uppercase tracking-tighter">¿Limpiar historial?</h4>
-            <div class="grid grid-cols-2 gap-3 pt-2">
-                <button onclick="closeModal('reset-confirm-modal')" class="bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase">No</button>
-                <button onclick="clearAll()" class="bg-red-600 text-white py-3 rounded-xl font-bold text-xs uppercase text-white">Sí, Borrar</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const initialData = [
-            { id: 1004, dateKey: "17/03/2026", dateStr: "17 mar", km: 85, uB: 20128, cB: 39306, br: 59434, tx: 9064, nt: 50370, cs: 0, fl: 0, tg: 584, h: 6.9, time: "09:21 - 22:15" },
-            { id: 1003, dateKey: "16/03/2026", dateStr: "16 mar", km: 145, uB: 108675, cB: 7955, br: 116630, tx: 17786, nt: 98844, cs: 0, fl: 17000, tg: 0, h: 13.6, time: "06:51 - 20:30" }
+        // DATOS REALES (SEMANA MARZO 16 - LUNES Y MARTES)
+        const seedData = [
+            { id: 1004, dateKey: "17/03/2026", dateStr: "17 mar", km: 85, uB: 20128, cB: 39306, br: 59434, tx: 9064, nt: 50370, cs: 0, fl: 0, tg: 584, h: 6.9 },
+            { id: 1003, dateKey: "16/03/2026", dateStr: "16 mar", km: 145, uB: 108675, cB: 7955, br: 116630, tx: 17786, nt: 98844, cs: 0, fl: 17000, tg: 0, h: 13.6 }
         ];
 
-        let db = JSON.parse(localStorage.getItem('master_301_audit_vfinal')) || initialData;
+        let db = JSON.parse(localStorage.getItem('master_301_audit_vfinal'));
+        if (!db || db.length === 0) {
+            db = seedData;
+            localStorage.setItem('master_301_audit_vfinal', JSON.stringify(db));
+        }
+
         let currentView = 'semanal';
         let sessTags = [];
         let sessFuel = [];
         let deletingId = null;
 
         function safeIcons() { if (window.lucide) { window.lucide.createIcons(); } }
-        function getTime() { const n = new Date(); return n.getHours().toString().padStart(2, '0') + ":" + n.getMinutes().toString().padStart(2, '0'); }
+        function showToast() { const t = document.getElementById('toast'); t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2500); }
 
         window.addExp = function(type) {
             const i = document.getElementById(`${type}-input`);
@@ -328,8 +307,6 @@
         }
 
         window.processEntry = function() {
-            const h1 = document.getElementById('input-time-start').value;
-            const h2 = document.getElementById('input-time-end').value;
             const sk = parseFloat(document.getElementById('input-km-start').value);
             const ek = parseFloat(document.getElementById('input-km-end').value);
             const ub = parseFloat(document.getElementById('uber-bruto').value) || 0;
@@ -337,13 +314,11 @@
             const uc = parseFloat(document.getElementById('uber-cash').value) || 0;
             const cc = parseFloat(document.getElementById('cabify-cash').value) || 0;
 
-            if (isNaN(sk) || isNaN(ek) || (ub + cb) === 0 || !h1 || !h2) { alert("Completa KM, Horas y ganancias."); return; }
-            if (ek < sk) { alert("KM Término debe ser mayor."); return; }
+            if (isNaN(sk) || isNaN(ek) || (ub + cb) === 0) { 
+                alert("Completa KM inicial, final y al menos una ganancia bruta."); 
+                return; 
+            }
 
-            const [startH, startM] = h1.split(':').map(Number);
-            const [endH, endM] = h2.split(':').map(Number);
-            let dm = (endH * 60 + endM) - (startH * 60 + startM); if (dm < 0) dm += 1440;
-            
             const n = new Date();
             const flT = sessFuel.reduce((a,b)=>a+b, 0);
             const tgT = sessTags.reduce((a,b)=>a+b, 0);
@@ -353,15 +328,18 @@
                 id: Date.now(),
                 dateKey: n.getDate().toString().padStart(2, '0') + '/' + (n.getMonth() + 1).toString().padStart(2, '0') + '/' + n.getFullYear(),
                 dateStr: new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short' }).format(n),
-                km: ek - sk, uB: ub, cB: cb, br: br, cs: uc + cc, fl: flT, tg: tgT, tx: tx, nt: nt, bk: nt - (uc + cc), h: dm / 60, time: `${h1} - ${h2}`
+                km: ek - sk, uB: ub, cB: cb, br: br, cs: uc + cc, fl: flT, tg: tgT, tx: tx, nt: nt, bk: nt - (uc + cc), h: 0
             };
 
             db.unshift(e); localStorage.setItem('master_301_audit_vfinal', JSON.stringify(db));
-            sessTags = []; sessFuel = []; document.getElementById('input-km-start').value = ek;
-            ['input-km-end', 'uber-bruto', 'uber-cash', 'cabify-bruto', 'cabify-cash', 'input-time-start', 'input-time-end'].forEach(id => document.getElementById(id).value = "");
+            
+            showToast();
+            sessTags = []; sessFuel = []; 
+            document.getElementById('input-km-start').value = ek;
+            ['input-km-end', 'uber-bruto', 'uber-cash', 'cabify-bruto', 'cabify-cash'].forEach(id => document.getElementById(id).value = "");
             renderExps(); refreshUI();
             
-            document.getElementById('modal-summary').innerHTML = `<div class="flex justify-between"><span>Recorrido:</span><span>${e.km} KM</span></div><div class="flex justify-between"><span>Bruto Total:</span><span>$${e.br.toLocaleString('es-CL')}</span></div><div class="flex justify-between text-red-500 font-bold"><span>SII (15.25%):</span><span>-$${e.tx.toLocaleString('es-CL')}</span></div><div class="border-t border-slate-200 mt-3 pt-3 flex justify-between font-black text-slate-900"><span>Líquido:</span><span class="text-green-700 text-lg">$${e.nt.toLocaleString('es-CL')}</span></div>`;
+            document.getElementById('modal-summary').innerHTML = `<div class="flex justify-between"><span>Distancia:</span><span>${e.km} KM</span></div><div class="flex justify-between font-black text-slate-900"><span>Bruto Total:</span><span>$${e.br.toLocaleString('es-CL')}</span></div><div class="flex justify-between text-red-500 font-bold"><span>SII (15.25%):</span><span>-$${e.tx.toLocaleString('es-CL')}</span></div><div class="border-t border-slate-200 mt-3 pt-3 flex justify-between font-black text-slate-900"><span>Líquido:</span><span class="text-green-700 text-lg">$${e.nt.toLocaleString('es-CL')}</span></div>`;
             document.getElementById('modal-cash').innerText = `$${e.cs.toLocaleString('es-CL')}`;
             document.getElementById('modal-bank').innerText = `$${Math.round(e.bk).toLocaleString('es-CL')}`;
             document.getElementById('result-modal').classList.add('active'); safeIcons();
@@ -400,14 +378,14 @@
                 <div class="card p-4 border border-slate-100 mb-3 shadow-sm text-slate-800 relative">
                     <button onclick="confirmDelete(${l.id})" class="absolute top-4 right-4 bg-red-50 p-2 rounded-full text-red-600 active:scale-90 transition-transform"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     <div class="flex justify-between items-start mb-2 pr-10">
-                        <div class="bg-blue-900 text-white px-2 py-1 rounded-lg text-[9px] font-black uppercase text-white tracking-wider">${l.dateStr}</div>
+                        <div class="bg-blue-900 text-white px-2 py-1 rounded-lg text-[9px] font-black uppercase">${l.dateStr}</div>
                         <div class="text-right">
                             <p class="text-sm font-black text-green-600 leading-none">$${Math.round(l.nt || 0).toLocaleString('es-CL')} NETO</p>
                             <p class="text-[8px] font-bold text-slate-400 mt-1 uppercase">Bruto: $${Math.round(l.br || 0).toLocaleString('es-CL')}</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 text-[9px] border-t border-slate-50 pt-2 text-slate-600 font-bold">
-                        <div><p>${l.km || 0} KM | $${pk}/KM</p><p class="text-[7px] font-normal italic opacity-60">${l.time || 'Registro'}</p></div>
+                        <div><p>${l.km || 0} KM | $${pk}/KM</p></div>
                         <div class="flex flex-col gap-1 text-[8px]">
                             <div class="flex justify-between"><span>UBER:</span><span class="text-black">$${Math.round(l.uB || 0).toLocaleString('es-CL')}</span></div>
                             <div class="flex justify-between"><span>CABIFY:</span><span class="text-[#7343e2]">$${Math.round(l.cB || 0).toLocaleString('es-CL')}</span></div>
